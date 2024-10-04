@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blog Posts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e0e0e0; /* Lighter line for header */
+    background-color: #fff;
+}
+
+li {
+    padding: 15px;
+    margin: 15px 0;
+    border-bottom: 1px solid #e0e0e0; /* Lighter line for list items */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-light {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .btn-light:hover {
+            background-color: #ddd;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: inline-block;
+            text-align: center;
+            line-height: 40px;
+            font-size: 1.2em;
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+       
+
+        li:hover {
+            background-color: #f9f9f9;
+        }
+
+        li h2 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        li p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
+        }
+
+        a.clickable-post {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a.clickable-post:hover h2 {
+            text-decoration: none;
+        }
+
+        /* Remove underline for all links */
+        a {
+            text-decoration: none;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            ul {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            li h2 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Medium</h1>
+        <div class="actions">
+            <a href="/create" class="btn"><i class="fas fa-pencil-alt"></i>Write</a>
+            <div class="avatar">A</div>
+        </div>
+    </header>
+
+    <!-- Blog Posts Section -->
+    <ul>
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <a href="/post/<%= post.id %>" class="clickable-post">
+                    <li>
+                        <h2><%= post.title %></h2>
+                        <p><%= post.content %></p>
+                    </li>
+                </a>
+            <% }) %>
+        <% } else { %>
+            <li>No posts available. <a href="/create">Create one</a></li>
+        <% } %>
+    </ul>
+</body>
+
+</html>
