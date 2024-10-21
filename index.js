@@ -49,6 +49,14 @@ pool.connect((err) => {
   }
 });
 
+// Define the isAuthenticated middleware
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+};
+
 // Define routes
 app.get("/", (req, res) => {
   res.render("login.ejs");
@@ -107,17 +115,13 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/index", async (req, res) => {
-  if (req.isAuthenticated()) {
-    try {
-      const result = await pool.query("SELECT * FROM posts ORDER BY id ASC");
-      res.render("index.ejs", { posts: result.rows });
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      res.status(500).send("Error fetching posts");
-    }
-  } else {
-    res.redirect("/login");
+app.get("/index", isAuthenticated, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM posts ORDER BY id ASC");
+    res.render("index.ejs", { posts: result.rows });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).send("Error fetching posts");
   }
 });
 
@@ -177,6 +181,89 @@ passport.deserializeUser(async (id, done) => {
     done(null, result.rows[0]);
   } catch (err) {
     done(err);
+  }
+});
+
+// Route to show all posts
+app.get('/posts', isAuthenticated, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM posts ORDER BY id ASC");
+    res.render('index', { posts: result.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving posts');
+  }
+});
+
+// Route to show a form to create a new post
+app.get('/create', isAuthenticated, (req, res) => {
+  res.render('create');
+});
+
+// Route to create a new post
+app.post('/create', isAuthenticated, async (req, res) => {
+  const { title, content } = req.body;
+  try {
+    await pool.query("INSERT INTO posts (title, content, username) VALUES ($1, $2, $3)", [title, content, req.user.username]);
+    res.redirect('/posts');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error creating post');
+  }
+});
+
+// Route to view a single post by id
+app.get('/post/:id', async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [req.params.id]);
+    const post = result.rows[0];
+    if (post) {
+      res.render('post', { post });
+    } else {
+      res.status(404).send('Post not found');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving post');
+  }
+});
+
+// Route to show a form to edit a post
+app.get('/edit/:id', isAuthenticated, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [req.params.id]);
+    const post = result.rows[0];
+    if (post) {
+      res.render('edit', { post });
+    } else {
+      res.status(404).send('Post not found');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving post');
+  }
+});
+
+// Route to update a post
+app.post('/edit/:id', isAuthenticated, async (req, res) => {
+  const { title, content } = req.body;
+  try {
+    await pool.query("UPDATE posts SET title = $1, content = $2 WHERE id = $3", [title, content, req.params.id]);
+    res.redirect(`/post/${req.params.id}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error updating post');
+  }
+});
+
+// Route to delete a post
+app.post('/delete/:id', isAuthenticated, async (req, res) => {
+  try {
+    await pool.query("DELETE FROM posts WHERE id = $1", [req.params.id]);
+    res.redirect('/posts');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error deleting post');
   }
 });
 
