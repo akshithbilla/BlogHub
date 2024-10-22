@@ -6,6 +6,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import session from "express-session";
 import dotenv from "dotenv";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -14,12 +16,20 @@ const port = 3000;
 const saltRounds = 10;
 const { Pool } = pg;
 
+// Equivalent to __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware setup
 app.set('view engine', 'ejs');
+// Set the path for the views directory
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve static files (CSS, images, etc.) from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-//app.use(express.static(path.join(__dirname, 'public')));
-
 
 // Session configuration
 app.use(
@@ -151,7 +161,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://jtsv3v-3000.csb.app/auth/google/secrets",
+      callbackURL: "https://your-app-url.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
