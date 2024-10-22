@@ -161,7 +161,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://your-app-url.com/auth/google/callback",
+      callbackURL: "https://aksb-omega.vercel.app/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
