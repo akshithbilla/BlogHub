@@ -137,6 +137,19 @@ app.get("/index", isAuthenticated, async (req, res) => {
   }
 });
 
+// Google OAuth Routes
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/auth/google/secrets",
+  passport.authenticate("google", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
 // Passport local strategy for user login
 passport.use(
   new LocalStrategy(async (username, password, done) => {
