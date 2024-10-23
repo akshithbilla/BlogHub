@@ -174,7 +174,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://aksb-omega.vercel.app/auth/google/callback",
+      callbackURL: "https://aksb-omega.vercel.app/auth/google/secrets",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -208,6 +208,48 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
+
+// Route to register a new user
+app.post("/register", async (req, res) => {
+  const email = req.body.username;
+  const password = req.body.password;
+
+  try {
+    const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
+    if (checkResult.rows.length > 0) {
+      res.render("register.ejs", { message: "User already exists, please login." });
+    } else {
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+        } else {
+          const result = await db.query(
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            [email, hash]
+          );
+          const user = result.rows[0];
+          req.login(user, (err) => {
+            if (err) console.error(err);
+            res.redirect("/index");
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Local login route
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
+
 
 // Route to show all posts
 app.get('/posts', isAuthenticated, async (req, res) => {
