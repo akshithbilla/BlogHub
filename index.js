@@ -16,7 +16,7 @@ const port = 3000;
 const saltRounds = 10;
 const { Pool } = pg;
 
-// Equivalent to __dirname for ES modules
+// Equivalent to __dirname for ES modules--- VERCEL USAGE
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -146,7 +146,7 @@ app.get(
 app.get(
   "/auth/google/secrets",
   passport.authenticate("google", {
-    successRedirect: "/posts",
+    successRedirect: "/index",
     failureRedirect: "/login",
   })
 );
@@ -245,7 +245,7 @@ app.post("/register", async (req, res) => {
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/posts",
+    successRedirect: "/index",
     failureRedirect: "/login",
   })
 );
@@ -280,7 +280,7 @@ app.post('/create', isAuthenticated, async (req, res) => {
 });
 
 // Route to view a single post by id
-app.get('/post/:id', async (req, res) => {
+app.get('/post/:id', isAuthenticated, async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM posts WHERE id = $1", [req.params.id]);
     const post = result.rows[0];
