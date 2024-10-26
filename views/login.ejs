@@ -1,68 +1,179 @@
-<link rel="icon" href="views/nm.jpg" type="image/jpeg">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <link rel="icon" href="views/nm.jpg" type="image/jpeg">
+  <style>
+    /* Reset and Base Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
 
-<link rel="stylesheet" href="/css/styles.css">
-<style>
-  .login-with-google-btn {
-      transition: background-color .3s, box-shadow .3s;
-      padding: 12px 16px 12px 42px;
-      border: none;
-      border-radius: 3px;
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
-      color: #757575;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=');
-      background-color: white;
-      background-repeat: no-repeat;
-      background-position: 12px 11px;
-      cursor: pointer;
-  }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    }
 
-  .login-with-google-btn:hover {
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
-  }
-
-  .login-with-google-btn:active {
-      background-color: #eeeeee;
-  }
-
-  .login-with-google-btn:focus {
-      outline: none;
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25), 0 0 0 3px #c8dafc;
-  }
-
-  .login-with-google-btn:disabled {
-      filter: grayscale(100%);
-      background-color: #ebebeb;
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
-      cursor: not-allowed;
-  }
-
-  body {
+    .login-container {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      padding: 2em 3em;
       text-align: center;
-      padding-top: 2rem;
-  }
-</style>
-<div class="login-container">
-  <h1>Log In</h1>
-  <p class="signup-text">Don't have an account? <a href="/register">Sign up</a></p>
-  <div class="social-login">
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: translateY(0px);
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 0.5em;
+      font-weight: 500;
+    }
+
+    .signup-text {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 1.5em;
+    }
+
+    .signup-text a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .signup-text a:hover {
+      color: #0056b3;
+    }
+
+    .login-with-google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      width: 100%;
+      margin-bottom: 1.5em;
+      background-color: #fff;
+      color: #757575;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: box-shadow 0.3s;
+      font-size: 1em;
+      font-weight: 500;
+    }
+
+    .login-with-google-btn img {
+      margin-right: 10px;
+    }
+
+    .login-with-google-btn:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .divider {
+      color: #888;
+      font-size: 0.9em;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background-color: #ddd;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    .login-form input {
+      padding: 12px;
+      font-size: 1em;
+      font-weight: 400;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: border-color 0.3s;
+    }
+
+    .login-form input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .login-button {
+      padding: 12px;
+      font-size: 1em;
+      color: #fff;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    .login-button:hover {
+      background-color: #218838;
+    }
+
+    .forgot-password {
+      margin-top: 1em;
+      font-size: 0.9em;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .forgot-password:hover {
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Log In</h1>
+    <p class="signup-text">Don't have an account? <a href="/register">Sign up</a></p>
     <button type="button" class="login-with-google-btn" onclick="window.location.href='/auth/google'">
-        Sign in with Google
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=" alt="Google Logo">
+      Sign in with Google
     </button>
-
-   
-</div>
-
-  <div class="divider">OR</div>
-  
-  <form action="/login" method="POST" class="login-form">
+    <div class="divider">OR</div>
+    <form action="/login" method="POST" class="login-form">
       <input type="email" name="username" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit" class="login-button">Login</button>
       <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
-  </form>
-</div>
-
-
+    </form>
+  </div>
+</body>
+</html>
